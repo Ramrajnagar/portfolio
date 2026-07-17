@@ -14,7 +14,7 @@ const projects = [
     color: "#ff7128",
     colorLight: "#ff712818",
     tag: "Full-Stack SaaS",
-    link: "https://github.com/Ramrajnagar/Rverity",
+    link: "https://rverityai.vercel.app/",
     githubLink: "https://github.com/Ramrajnagar/Rverity",
     features: ["Memory graphs", "Multi-source ingestion", "RAG-powered search"],
     stats: [
@@ -50,7 +50,7 @@ const projects = [
     color: "#22d3ee",
     colorLight: "#22d3ee18",
     tag: "AI/ML Platform",
-    link: "https://github.com/Ramrajnagar/LEDGERA",
+    link: "https://ledgera-tawny.vercel.app/",
     githubLink: "https://github.com/Ramrajnagar/LEDGERA",
     features: ["Digital twins", "Agent orchestration", "Predictive analytics"],
     stats: [
