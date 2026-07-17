@@ -14,7 +14,8 @@ const projects = [
     color: "#ff7128",
     colorLight: "#ff712818",
     tag: "Full-Stack SaaS",
-    link: "#",
+    link: "https://github.com/Ramrajnagar/Rverity",
+    githubLink: "https://github.com/Ramrajnagar/Rverity",
     features: ["Memory graphs", "Multi-source ingestion", "RAG-powered search"],
     stats: [
       { label: "Sources", value: "12+" },
@@ -32,6 +33,7 @@ const projects = [
     colorLight: "#fa769218",
     tag: "Community Platform",
     link: "https://ink-she.vercel.app",
+    githubLink: "https://github.com/Ramrajnagar/inkShe",
     features: ["Tiptap editor", "Anonymous pen names", "Sakura themes", "Prisma + PostgreSQL"],
     stats: [
       { label: "Themes", value: "5+" },
@@ -48,7 +50,8 @@ const projects = [
     color: "#22d3ee",
     colorLight: "#22d3ee18",
     tag: "AI/ML Platform",
-    link: "#",
+    link: "https://github.com/Ramrajnagar/LEDGERA",
+    githubLink: "https://github.com/Ramrajnagar/LEDGERA",
     features: ["Digital twins", "Agent orchestration", "Predictive analytics"],
     stats: [
       { label: "Agents", value: "Autonomous" },
@@ -65,7 +68,8 @@ const projects = [
     color: "#e7524c",
     colorLight: "#e7524c18",
     tag: "Fintech",
-    link: "#",
+    link: "https://intellitrade.live/",
+    githubLink: null,
     features: ["ML models", "Real-time data", "Risk management"],
     stats: [
       { label: "Models", value: "5+" },
@@ -341,33 +345,64 @@ function ProjectDetail({
               ))}
             </div>
 
-            {/* CTA */}
-            <motion.a
-              href={project.link}
-              target={project.link !== "#" ? "_blank" : undefined}
-              rel={project.link !== "#" ? "noopener noreferrer" : undefined}
-              initial={{ opacity: 0, y: 15 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-[0.9375rem] font-[700] transition-all duration-500 hover:shadow-lg w-fit"
-              style={{
-                background: project.color,
-                color: "#fff",
-                boxShadow: `0 4px 24px ${project.color}30`,
-              }}
-            >
-              View project
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
+            {/* CTAs — live site + GitHub */}
+            <div className="flex flex-wrap items-center gap-4">
+              <motion.a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 15 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-[0.9375rem] font-[700] transition-all duration-500 hover:shadow-lg"
+                style={{
+                  background: project.color,
+                  color: "#fff",
+                  boxShadow: `0 4px 24px ${project.color}30`,
+                }}
               >
-                <path d="M7 17L17 7M17 7H7M17 7v10" />
-              </svg>
-            </motion.a>
+                {project.githubLink && project.githubLink !== project.link
+                  ? "View live site"
+                  : "View on GitHub"}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
+                </svg>
+              </motion.a>
+
+              {project.githubLink && project.githubLink !== project.link && (
+                <motion.a
+                  href={project.githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.9 }}
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-[0.9375rem] font-[700] transition-all duration-500 hover:shadow-lg border"
+                  style={{
+                    background: "transparent",
+                    color: "#1a1a1a",
+                    borderColor: "#ddd",
+                  }}
+                >
+                  GitHub
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                </motion.a>
+              )}
+            </div>
           </motion.div>
         </div>
       </div>
