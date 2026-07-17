@@ -1,101 +1,146 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
+  const [ready, setReady] = useState(false);
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, -150]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -80]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const scale = useTransform(scrollY, [0, 500], [1, 0.95]);
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 100);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
-    <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated background */}
-      <div className="absolute inset-0">
-        {/* Gradient orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-[#c8a97e]/[0.04] blur-[120px]"
-          animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+    <section
+      data-section
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{ background: "#fafafa" }}
+    >
+      {/* Floating accent shapes — Delassus-style decorative blobs */}
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute top-[15%] right-[10%] w-[320px] h-[320px] rounded-full opacity-[0.12]"
+        animate={ready ? { scale: [1, 1.08, 1], rotate: [0, 3, 0] } : {}}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div
+          className="w-full h-full rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, #ff7128 0%, transparent 70%)",
+          }}
         />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-[#e8ddd0]/[0.03] blur-[100px]"
-          animate={{ x: [0, -20, 0], y: [0, 30, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+      </motion.div>
+
+      <motion.div
+        style={{ y: y1 }}
+        className="absolute bottom-[20%] left-[8%] w-[240px] h-[240px] rounded-full opacity-[0.08]"
+        animate={ready ? { scale: [1, 1.12, 1], rotate: [0, -5, 0] } : {}}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
+      >
+        <div
+          className="w-full h-full rounded-full"
+          style={{
+            background: "radial-gradient(circle, #e7524c 0%, transparent 70%)",
+          }}
         />
+      </motion.div>
 
-        {/* Grid lines */}
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div className="absolute inset-0" style={{
-            backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-            backgroundSize: "80px 80px"
-          }} />
-        </div>
-      </div>
+      <motion.div
+        style={{ y: y2 }}
+        className="absolute top-[60%] right-[25%] w-[180px] h-[180px] rounded-full opacity-[0.10]"
+        animate={ready ? { scale: [1, 1.06, 1] } : {}}
+        transition={{
+          duration: 18,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 4,
+        }}
+      >
+        <div
+          className="w-full h-full rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, #ffd200 0%, transparent 70%)",
+          }}
+        />
+      </motion.div>
 
-      <motion.div style={{ opacity, scale, y }} className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        {/* Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-8"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.08] text-[11px] font-medium text-[#8a8a8a] tracking-[0.15em] uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#c8a97e] animate-pulse" />
-            Developer & Builder
-          </span>
-        </motion.div>
-
-        {/* Main headline */}
-        <motion.h1
+      {/* Hero content */}
+      <motion.div style={{ opacity, scale }} className="relative z-10 text-center px-6 max-w-[900px]">
+        {/* Small label like Delassus */}
+        <motion.p
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="font-[family-name:var(--font-display)] text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-light tracking-[-0.03em] leading-[1.05] mb-8"
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
+          className="text-[0.75rem] tracking-[0.3em] uppercase mb-8"
+          style={{ color: "#757575" }}
         >
-          <span className="text-[#f5f0e8]">Ramraj</span>
+          Developer & Builder
+        </motion.p>
+
+        {/* Main heading — Delassus uses enormous type */}
+        <motion.h1
+          initial={{ opacity: 0, y: 60 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1, delay: 0.5, ease: [0.86, 0, 0.07, 1] }}
+          className="text-[clamp(3rem,10vw,8rem)] leading-[0.95] font-[500] tracking-[-0.03em]"
+          style={{ color: "#2f2f2f" }}
+        >
+          Ramraj
           <br />
-          <span className="text-[#c8a97e]">Nagar</span>
+          Nagar
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="text-lg md:text-xl text-[#8a8a8a] max-w-xl mx-auto leading-relaxed font-light"
+          initial={{ opacity: 0, y: 40 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.8, ease: [0.23, 1, 0.32, 1] }}
+          className="mt-8 text-[clamp(0.875rem,2vw,1.125rem)] leading-relaxed max-w-[500px] mx-auto"
+          style={{ color: "#757575" }}
         >
-          Building digital experiences at the intersection of code and craft.
+          Building digital experiences that people actually enjoy using.
         </motion.p>
 
-        {/* CTA */}
+        {/* CTA — Delassus-style pill button */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
-          className="mt-12 flex items-center justify-center gap-6"
+          initial={{ opacity: 0, y: 30 }}
+          animate={ready ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 1.1, ease: [0.23, 1, 0.32, 1] }}
+          className="mt-12 flex items-center justify-center gap-4"
         >
           <a
             href="#work"
-            className="group inline-flex items-center gap-3 px-7 py-3.5 bg-[#f5f0e8] text-[#0a0a0a] rounded-full text-sm font-medium hover:bg-[#c8a97e] transition-all duration-300"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-[0.875rem] font-[500] transition-all duration-[0.8s]"
+            style={{
+              background: "#ff7128",
+              color: "#fff",
+              boxShadow: "rgba(140, 49, 4, 0.15) 0px 4px 24px",
+            }}
           >
-            View Work
-            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            See my work
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M7 17L17 7M17 7H7M17 7v10" />
             </svg>
-          </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-medium text-[#8a8a8a] border border-white/[0.08] rounded-full hover:border-[#c8a97e]/30 hover:text-[#f5f0e8] transition-all duration-300"
-          >
-            Get in Touch
           </a>
         </motion.div>
       </motion.div>
@@ -103,15 +148,16 @@ export default function Hero() {
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        animate={ready ? { opacity: 1 } : {}}
+        transition={{ delay: 2, duration: 1 }}
+        style={{ opacity }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2"
       >
-        <span className="text-[10px] text-[#555] tracking-[0.2em] uppercase">Scroll</span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-[1px] h-8 bg-gradient-to-b from-[#555] to-transparent"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-[1px] h-12"
+          style={{ background: "#ccc" }}
         />
       </motion.div>
     </section>

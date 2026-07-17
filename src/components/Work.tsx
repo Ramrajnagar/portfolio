@@ -1,140 +1,214 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
 const projects = [
   {
     title: "Rverity",
-    subtitle: "Digital Memory Platform",
-    description: "A developer-first digital memory platform with AI-powered knowledge graphs. Captures context from every tool you use and connects it into a queryable system.",
-    tags: ["Next.js", "Supabase", "AI", "TypeScript"],
-    color: "#00A3FF",
-    year: "2026",
+    description: "A digital memory platform that lets AI remember your life context across sessions.",
+    color: "#ff7128",
+    tag: "Full-Stack SaaS",
+    link: "#",
+    features: ["Memory graphs", "Multi-source ingestion", "RAG-powered search"],
   },
   {
     title: "LEDGERA",
-    subtitle: "Supply Chain OS",
-    description: "A decentralized operating system for autonomous supply chains. Deterministic state machine for global trade execution with zero-trust architecture.",
-    tags: ["Next.js", "Three.js", "Prisma", "MapLibre"],
+    description: "Autonomous supply chain control room with AI agents for real-time logistics decisions.",
     color: "#22d3ee",
-    year: "2026",
+    tag: "AI/ML Platform",
+    link: "#",
+    features: ["Digital twins", "Agent orchestration", "Predictive analytics"],
   },
   {
     title: "IntelliTrade",
-    subtitle: "Trading Intelligence",
-    description: "Algorithmic trading platform with real-time market data, strategy backtesting, and automated execution engine.",
-    tags: ["Python", "React", "WebSocket", "PostgreSQL"],
-    color: "#c8a97e",
-    year: "2025",
+    description: "Algorithmic trading platform with machine learning models for market prediction.",
+    color: "#e7524c",
+    tag: "Fintech",
+    link: "#",
+    features: ["ML models", "Real-time data", "Risk management"],
   },
   {
     title: "CodeGraph",
-    subtitle: "Code Intelligence",
-    description: "Static analysis tool that maps codebases into knowledge graphs. Understand dependencies, impact analysis, and code evolution.",
-    tags: ["TypeScript", "AST", "Graph DB", "CLI"],
-    color: "#a78bfa",
-    year: "2025",
+    description: "Visual codebase exploration tool that maps dependencies as interactive graphs.",
+    color: "#ffd200",
+    tag: "Dev Tools",
+    link: "#",
+    features: ["AST parsing", "Interactive graph", "Dependency analysis"],
   },
 ];
 
-export default function Work() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <section id="work" className="py-32 md:py-40 px-6 md:px-12 border-t border-white/[0.06]" ref={ref}>
-      <div className="max-w-7xl mx-auto">
-        {/* Section header */}
-        <div className="mb-20">
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="text-[11px] text-[#c8a97e] tracking-[0.2em] uppercase font-medium block mb-6"
-          >
-            Selected Work
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-[family-name:var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-light tracking-[-0.02em] text-[#f5f0e8]"
-          >
-            Things I&apos;ve built
-          </motion.h2>
-        </div>
-
-        {/* Projects list */}
-        <div className="space-y-0">
-          {projects.map((project, i) => (
-            <ProjectRow key={i} project={project} index={i} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ProjectRow({ project, index }: { project: typeof projects[0]; index: number }) {
+function ProjectCard({
+  project,
+  index,
+}: {
+  project: (typeof projects)[0];
+  index: number;
+}) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  // Delassus-style floating: each card floats at different speeds
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [80 * (index % 2 === 0 ? 1 : -1), -80 * (index % 2 === 0 ? 1 : -1)]
+  );
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, -8]);
+  const rotateY = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [index % 2 === 0 ? -4 : 4, 0, index % 2 === 0 ? 4 : -4]
+  );
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
+      style={{ y, perspective: 1000 }}
+      initial={{ opacity: 0, y: 60 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="group border-t border-white/[0.06] py-10 md:py-14 cursor-pointer"
+      transition={{
+        duration: 0.8,
+        delay: index * 0.15,
+        ease: [0.86, 0, 0.07, 1],
+      }}
     >
-      <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-12">
-        {/* Number */}
-        <div className="text-[11px] text-[#555] font-[family-name:var(--font-mono)] tracking-wider shrink-0 w-8">
-          {String(index + 1).padStart(2, "0")}
-        </div>
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="group relative rounded-3xl p-8 md:p-12 cursor-pointer overflow-hidden"
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.6, ease: [0.86, 0, 0.07, 1] }}
+      >
+        {/* Background color blob — Delassus-style product illustrations */}
+        <div
+          className="absolute top-0 right-0 w-[280px] h-[280px] rounded-full opacity-[0.12] blur-3xl transition-all duration-1000 group-hover:opacity-[0.22] group-hover:scale-110"
+          style={{ background: project.color }}
+        />
 
-        {/* Title + subtitle */}
-        <div className="flex-1">
-          <div className="flex items-baseline gap-4 mb-2">
-            <h3 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl font-light text-[#f5f0e8] group-hover:text-[#c8a97e] transition-colors duration-300">
-              {project.title}
-            </h3>
-            <span className="text-[11px] text-[#555] font-[family-name:var(--font-mono)]">{project.year}</span>
+        {/* Content */}
+        <div className="relative z-10">
+          {/* Tag */}
+          <div
+            className="inline-block px-3 py-1 rounded-full text-[0.6875rem] font-[500] tracking-[0.05em] uppercase mb-6"
+            style={{
+              background: `${project.color}18`,
+              color: project.color,
+            }}
+          >
+            {project.tag}
           </div>
-          <p className="text-[13px] text-[#8a8a8a]">{project.subtitle}</p>
-        </div>
 
-        {/* Description (hidden on mobile) */}
-        <div className="hidden lg:block flex-[1.5]">
-          <p className="text-[13px] text-[#666] leading-relaxed">{project.description}</p>
-        </div>
+          {/* Title */}
+          <h3
+            className="text-[clamp(1.75rem,3.5vw,2.75rem)] font-[500] leading-[1.1] tracking-[-0.02em] mb-4"
+            style={{ color: "#2f2f2f" }}
+          >
+            {project.title}
+          </h3>
 
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 shrink-0">
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 text-[10px] tracking-wider uppercase border border-white/[0.06] rounded-full text-[#666] group-hover:border-[#c8a97e]/20 group-hover:text-[#8a8a8a] transition-all duration-300"
+          {/* Description */}
+          <p
+            className="text-[clamp(0.875rem,1.3vw,1rem)] leading-[1.7] max-w-[440px] mb-8"
+            style={{ color: "#757575" }}
+          >
+            {project.description}
+          </p>
+
+          {/* Feature pills */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            {project.features.map((f) => (
+              <span
+                key={f}
+                className="px-3 py-1.5 rounded-full text-[0.75rem] font-[500]"
+                style={{ background: "#f6f6f6", color: "#2f2f2f" }}
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+
+          {/* Arrow — Delassus external link style */}
+          <div
+            className="inline-flex items-center gap-2 text-[0.8125rem] font-[500] group-hover:gap-3 transition-all duration-500"
+            style={{ color: project.color }}
+          >
+            View project
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
             >
-              {tag}
-            </span>
+              <path d="M7 17L17 7M17 7H7M17 7v10" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Border on hover */}
+        <div
+          className="absolute inset-0 rounded-3xl border transition-all duration-700 group-hover:border-opacity-20"
+          style={{ borderColor: `${project.color}00` }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
+export default function Work() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <section
+      data-section
+      ref={ref}
+      id="work"
+      className="relative py-32 md:py-48 px-6"
+      style={{ background: "#fff" }}
+    >
+      <div className="max-w-[1100px] mx-auto">
+        {/* Section label */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="text-[0.75rem] tracking-[0.3em] uppercase mb-6"
+          style={{ color: "#757575" }}
+        >
+          Selected Work
+        </motion.p>
+
+        {/* Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: 40 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{
+            duration: 0.8,
+            delay: 0.1,
+            ease: [0.86, 0, 0.07, 1],
+          }}
+          className="text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] font-[500] tracking-[-0.02em] mb-20 max-w-[600px]"
+          style={{ color: "#2f2f2f" }}
+        >
+          Things I&apos;ve
+          <br />
+          built.
+        </motion.h2>
+
+        {/* Project cards — Delassus floating layout */}
+        <div className="space-y-12 md:space-y-20">
+          {projects.map((project, i) => (
+            <ProjectCard key={project.title} project={project} index={i} />
           ))}
         </div>
-
-        {/* Arrow */}
-        <div className="shrink-0 hidden md:flex">
-          <div className="w-10 h-10 rounded-full border border-white/[0.06] flex items-center justify-center group-hover:border-[#c8a97e]/30 group-hover:bg-[#c8a97e]/10 transition-all duration-300">
-            <ArrowUpRight className="w-4 h-4 text-[#555] group-hover:text-[#c8a97e] transition-colors" />
-          </div>
-        </div>
       </div>
-
-      {/* Mobile description */}
-      <p className="lg:hidden text-[13px] text-[#666] leading-relaxed mt-4 ml-12">
-        {project.description}
-      </p>
-    </motion.div>
+    </section>
   );
 }

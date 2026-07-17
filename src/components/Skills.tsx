@@ -3,77 +3,130 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-const skills = [
+const skillGroups = [
   {
-    category: "Frontend",
-    items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    title: "Frontend",
+    color: "#ff7128",
+    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
   },
   {
-    category: "Backend",
-    items: ["Node.js", "Python", "PostgreSQL", "Supabase", "Prisma"],
+    title: "Backend",
+    color: "#e7524c",
+    skills: ["Node.js", "Python", "PostgreSQL", "Supabase", "REST APIs"],
   },
   {
-    category: "Tools & Systems",
-    items: ["Three.js", "MapLibre", "Docker", "Git", "CI/CD"],
+    title: "AI / ML",
+    color: "#ffd200",
+    skills: ["OpenAI API", "RAG Systems", "Vector DBs", "LangChain", "Embeddings"],
   },
   {
-    category: "Interests",
-    items: ["AI/ML", "Decentralized Systems", "Developer Experience", "Open Source"],
+    title: "Tools",
+    color: "#8bd3b9",
+    skills: ["Git", "Docker", "Vercel", "Linux", "Figma"],
   },
 ];
 
 export default function Skills() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="py-32 md:py-40 px-6 md:px-12 border-t border-white/[0.06]" ref={ref}>
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-          {/* Left heading */}
-          <div>
-            <motion.span
-              initial={{ opacity: 0, y: 12 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="text-[11px] text-[#c8a97e] tracking-[0.2em] uppercase font-medium block mb-6"
-            >
-              Capabilities
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-[family-name:var(--font-display)] text-3xl md:text-4xl lg:text-5xl font-light tracking-[-0.02em] leading-[1.15] text-[#f5f0e8]"
-            >
-              Tools of
-              <br />
-              <span className="text-[#c8a97e]">the trade</span>
-            </motion.h2>
-          </div>
+    <section
+      data-section
+      ref={ref}
+      className="relative py-32 md:py-48 px-6"
+      style={{ background: "#fafafa" }}
+    >
+      <div className="max-w-[1100px] mx-auto">
+        {/* Section label */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="text-[0.75rem] tracking-[0.3em] uppercase mb-6"
+          style={{ color: "#757575" }}
+        >
+          Skills
+        </motion.p>
 
-          {/* Right: skills grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-            {skills.map((group, i) => (
-              <motion.div
-                key={group.category}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
-              >
-                <h3 className="text-[11px] text-[#555] tracking-[0.2em] uppercase font-medium mb-4">
-                  {group.category}
-                </h3>
-                <ul className="space-y-2.5">
-                  {group.items.map((item) => (
-                    <li key={item} className="text-[15px] text-[#8a8a8a] hover:text-[#f5f0e8] transition-colors duration-200">
-                      {item}
-                    </li>
+        {/* Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: 40 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{
+            duration: 0.8,
+            delay: 0.1,
+            ease: [0.86, 0, 0.07, 1],
+          }}
+          className="text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] font-[500] tracking-[-0.02em] mb-20 max-w-[600px]"
+          style={{ color: "#2f2f2f" }}
+        >
+          What I
+          <br />
+          work with.
+        </motion.h2>
+
+        {/* Skill groups — Delassus-style colored cards */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {skillGroups.map((group, i) => (
+            <motion.div
+              key={group.title}
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{
+                duration: 0.7,
+                delay: 0.2 + i * 0.1,
+                ease: [0.23, 1, 0.32, 1],
+              }}
+              className="relative rounded-3xl p-8 md:p-10 overflow-hidden group"
+              style={{ background: "#fff" }}
+            >
+              {/* Color accent blob */}
+              <div
+                className="absolute top-0 right-0 w-[200px] h-[200px] rounded-full opacity-[0.08] blur-2xl transition-all duration-700 group-hover:opacity-[0.15]"
+                style={{ background: group.color }}
+              />
+
+              <div className="relative z-10">
+                {/* Group title with color dot */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{ background: group.color }}
+                  />
+                  <h3
+                    className="text-[0.8125rem] font-[500] tracking-[0.1em] uppercase"
+                    style={{ color: "#2f2f2f" }}
+                  >
+                    {group.title}
+                  </h3>
+                </div>
+
+                {/* Skills list */}
+                <div className="flex flex-wrap gap-2">
+                  {group.skills.map((skill, j) => (
+                    <motion.span
+                      key={skill}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={inView ? { opacity: 1, scale: 1 } : {}}
+                      transition={{
+                        duration: 0.4,
+                        delay: 0.3 + i * 0.1 + j * 0.05,
+                        ease: [0.23, 1, 0.32, 1],
+                      }}
+                      className="px-4 py-2 rounded-full text-[0.8125rem] font-[500] transition-colors duration-300"
+                      style={{
+                        background: `${group.color}10`,
+                        color: "#2f2f2f",
+                      }}
+                    >
+                      {skill}
+                    </motion.span>
                   ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
