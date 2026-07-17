@@ -36,17 +36,17 @@ export default function About() {
         <div className="grid md:grid-cols-[1.2fr_1fr] gap-16 md:gap-24 items-start">
           {/* Left — Bio */}
           <div>
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.8,
-                delay: 0.1,
-                ease: [0.86, 0, 0.07, 1],
-              }}
-              className="text-[clamp(2rem,4vw,3.5rem)] leading-[1.1] font-[500] tracking-[-0.02em]"
-              style={{ color: "#2f2f2f" }}
-            >
+          <motion.h2
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{
+              duration: 0.8,
+              delay: 0.1,
+              ease: [0.86, 0, 0.07, 1],
+            }}
+            className="text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.05] font-[700] tracking-[-0.03em]"
+            style={{ color: "#1a1a1a" }}
+          >
               I build things
               <br />
               that work.

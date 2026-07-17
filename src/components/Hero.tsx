@@ -95,8 +95,8 @@ export default function Hero() {
           initial={{ opacity: 0, y: 60 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, delay: 0.5, ease: [0.86, 0, 0.07, 1] }}
-          className="text-[clamp(3rem,10vw,8rem)] leading-[0.95] font-[500] tracking-[-0.03em]"
-          style={{ color: "#2f2f2f" }}
+          className="text-[clamp(3.5rem,11vw,9rem)] leading-[0.92] font-[700] tracking-[-0.04em]"
+          style={{ color: "#1a1a1a" }}
         >
           Ramraj
           <br />

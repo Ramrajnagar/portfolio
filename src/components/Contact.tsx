@@ -35,8 +35,8 @@ export default function Contact() {
             delay: 0.1,
             ease: [0.86, 0, 0.07, 1],
           }}
-          className="text-[clamp(2.5rem,6vw,5rem)] leading-[1.05] font-[500] tracking-[-0.02em]"
-          style={{ color: "#2f2f2f" }}
+          className="text-[clamp(3rem,7vw,6rem)] leading-[1.0] font-[700] tracking-[-0.03em]"
+          style={{ color: "#1a1a1a" }}
         >
           Let&apos;s build
           <br />

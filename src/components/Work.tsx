@@ -13,6 +13,14 @@ const projects = [
     features: ["Memory graphs", "Multi-source ingestion", "RAG-powered search"],
   },
   {
+    title: "InkShe",
+    description: "Anonymous writing platform for women — a safe, cozy digital sanctuary with themes, pen names, and a toxic-free community.",
+    color: "#fa7692",
+    tag: "Community Platform",
+    link: "https://ink-she.vercel.app",
+    features: ["Tiptap editor", "Anonymous pen names", "Sakura themes", "Prisma + PostgreSQL"],
+  },
+  {
     title: "LEDGERA",
     description: "Autonomous supply chain control room with AI agents for real-time logistics decisions.",
     color: "#22d3ee",
@@ -27,14 +35,6 @@ const projects = [
     tag: "Fintech",
     link: "#",
     features: ["ML models", "Real-time data", "Risk management"],
-  },
-  {
-    title: "CodeGraph",
-    description: "Visual codebase exploration tool that maps dependencies as interactive graphs.",
-    color: "#ffd200",
-    tag: "Dev Tools",
-    link: "#",
-    features: ["AST parsing", "Interactive graph", "Dependency analysis"],
   },
 ];
 
@@ -78,9 +78,9 @@ function ProjectCard({
       }}
     >
       <motion.div
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="group relative rounded-3xl p-8 md:p-12 cursor-pointer overflow-hidden"
-        whileHover={{ scale: 1.02 }}
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d", background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
+        className="group relative rounded-3xl p-10 md:p-14 cursor-pointer overflow-hidden"
+        whileHover={{ scale: 1.015, y: -4 }}
         transition={{ duration: 0.6, ease: [0.86, 0, 0.07, 1] }}
       >
         {/* Background color blob — Delassus-style product illustrations */}
@@ -93,7 +93,7 @@ function ProjectCard({
         <div className="relative z-10">
           {/* Tag */}
           <div
-            className="inline-block px-3 py-1 rounded-full text-[0.6875rem] font-[500] tracking-[0.05em] uppercase mb-6"
+            className="inline-block px-4 py-1.5 rounded-full text-[0.75rem] font-[700] tracking-[0.08em] uppercase mb-8"
             style={{
               background: `${project.color}18`,
               color: project.color,
@@ -104,16 +104,16 @@ function ProjectCard({
 
           {/* Title */}
           <h3
-            className="text-[clamp(1.75rem,3.5vw,2.75rem)] font-[500] leading-[1.1] tracking-[-0.02em] mb-4"
-            style={{ color: "#2f2f2f" }}
+            className="text-[clamp(2rem,4vw,3.25rem)] font-[700] leading-[1.05] tracking-[-0.03em] mb-5"
+            style={{ color: "#1a1a1a" }}
           >
             {project.title}
           </h3>
 
           {/* Description */}
           <p
-            className="text-[clamp(0.875rem,1.3vw,1rem)] leading-[1.7] max-w-[440px] mb-8"
-            style={{ color: "#757575" }}
+            className="text-[clamp(0.9375rem,1.4vw,1.125rem)] leading-[1.7] max-w-[480px] mb-8 font-[400]"
+            style={{ color: "#555" }}
           >
             {project.description}
           </p>
@@ -123,8 +123,8 @@ function ProjectCard({
             {project.features.map((f) => (
               <span
                 key={f}
-                className="px-3 py-1.5 rounded-full text-[0.75rem] font-[500]"
-                style={{ background: "#f6f6f6", color: "#2f2f2f" }}
+                className="px-4 py-2 rounded-full text-[0.8125rem] font-[600]"
+                style={{ background: "#f0f0f0", color: "#1a1a1a" }}
               >
                 {f}
               </span>
@@ -133,7 +133,7 @@ function ProjectCard({
 
           {/* Arrow — Delassus external link style */}
           <div
-            className="inline-flex items-center gap-2 text-[0.8125rem] font-[500] group-hover:gap-3 transition-all duration-500"
+            className="inline-flex items-center gap-2 text-[0.875rem] font-[700] group-hover:gap-3 transition-all duration-500"
             style={{ color: project.color }}
           >
             View project
@@ -194,8 +194,8 @@ export default function Work() {
             delay: 0.1,
             ease: [0.86, 0, 0.07, 1],
           }}
-          className="text-[clamp(2rem,4.5vw,4rem)] leading-[1.05] font-[500] tracking-[-0.02em] mb-20 max-w-[600px]"
-          style={{ color: "#2f2f2f" }}
+          className="text-[clamp(2.5rem,5.5vw,5rem)] leading-[1.0] font-[700] tracking-[-0.03em] mb-20 max-w-[600px]"
+          style={{ color: "#1a1a1a" }}
         >
           Things I&apos;ve
           <br />
