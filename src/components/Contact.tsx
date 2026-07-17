@@ -90,7 +90,7 @@ export default function Contact() {
         >
           {[
             { name: "GitHub", url: "https://github.com/Ramrajnagar" },
-            { name: "LinkedIn", url: "https://linkedin.com/in/ramrajnagar" },
+            { name: "LinkedIn", url: "https://www.linkedin.com/in/ramraj-nagar-784771307/" },
           ].map((link) => (
             <a
               key={link.name}
