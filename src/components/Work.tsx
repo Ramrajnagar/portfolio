@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import TechLogos from "./TechLogos";
+import ProjectLogo from "./ProjectLogo";
 
 const projects = [
   {
@@ -111,12 +112,7 @@ function ProjectCard({
       <div className="relative z-10 p-8 md:p-10">
         {/* Big letter — like Delassus product icon */}
         <div className="flex items-start justify-between mb-8">
-          <div
-            className="text-[4rem] md:text-[5rem] font-[700] leading-none select-none opacity-15"
-            style={{ color: project.color }}
-          >
-            {project.title.charAt(0)}
-          </div>
+          <ProjectLogo project={project.id} size={80} />
           <svg
             width="24"
             height="24"
@@ -221,16 +217,14 @@ function ProjectDetail({
                 />
               </motion.div>
 
-              {/* Big initial */}
+              {/* Animated project logo */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <motion.div
                   initial={{ scale: 0.7, opacity: 0 }}
                   animate={inView ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ duration: 0.8, delay: 0.5, ease: [0.86, 0, 0.07, 1] }}
-                  className="text-[6rem] md:text-[9rem] font-[700] leading-none select-none"
-                  style={{ color: project.color, opacity: 0.12 }}
+                  transition={{ duration: 0.8, delay: 0.3, ease: [0.86, 0, 0.07, 1] }}
                 >
-                  {project.title.charAt(0)}
+                  <ProjectLogo project={project.id} size={200} />
                 </motion.div>
               </div>
 
