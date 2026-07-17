@@ -6,39 +6,67 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 const projects = [
   {
     title: "Rverity",
-    description: "A digital memory platform that lets AI remember your life context across sessions.",
+    description:
+      "A digital memory platform that lets AI remember your life context across sessions. Ingests from WhatsApp, PDFs, browser history, and more — then lets you search your life with natural language.",
     color: "#ff7128",
+    colorLight: "#ff712818",
     tag: "Full-Stack SaaS",
     link: "#",
     features: ["Memory graphs", "Multi-source ingestion", "RAG-powered search"],
+    stats: [
+      { label: "Sources", value: "12+" },
+      { label: "Latency", value: "<200ms" },
+      { label: "Storage", value: "Vector + Graph" },
+    ],
   },
   {
     title: "InkShe",
-    description: "Anonymous writing platform for women — a safe, cozy digital sanctuary with themes, pen names, and a toxic-free community.",
+    description:
+      "Anonymous writing platform for women — a safe, cozy digital sanctuary. Write freely with pen names, beautiful Sakura themes, and a toxic-free community built on trust.",
     color: "#fa7692",
+    colorLight: "#fa769218",
     tag: "Community Platform",
     link: "https://ink-she.vercel.app",
     features: ["Tiptap editor", "Anonymous pen names", "Sakura themes", "Prisma + PostgreSQL"],
+    stats: [
+      { label: "Themes", value: "5+" },
+      { label: "Editor", value: "Tiptap" },
+      { label: "Stack", value: "Next.js 16" },
+    ],
   },
   {
     title: "LEDGERA",
-    description: "Autonomous supply chain control room with AI agents for real-time logistics decisions.",
+    description:
+      "Autonomous supply chain control room with AI agents for real-time logistics decisions. Digital twins of your entire supply chain, predictive analytics, and autonomous agent orchestration.",
     color: "#22d3ee",
+    colorLight: "#22d3ee18",
     tag: "AI/ML Platform",
     link: "#",
     features: ["Digital twins", "Agent orchestration", "Predictive analytics"],
+    stats: [
+      { label: "Agents", value: "Autonomous" },
+      { label: "Data", value: "Real-time" },
+      { label: "Models", value: "LLM + ML" },
+    ],
   },
   {
     title: "IntelliTrade",
-    description: "Algorithmic trading platform with machine learning models for market prediction.",
+    description:
+      "Algorithmic trading platform with machine learning models for market prediction. Backtest strategies, analyze patterns, and execute trades with confidence.",
     color: "#e7524c",
+    colorLight: "#e7524c18",
     tag: "Fintech",
     link: "#",
     features: ["ML models", "Real-time data", "Risk management"],
+    stats: [
+      { label: "Models", value: "5+" },
+      { label: "Backtest", value: "Historical" },
+      { label: "Latency", value: "Real-time" },
+    ],
   },
 ];
 
-function ProjectCard({
+function ProjectSection({
   project,
   index,
 }: {
@@ -46,118 +74,227 @@ function ProjectCard({
   index: number;
 }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const inView = useInView(ref, { once: true, margin: "-80px" });
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  // Delassus-style floating: each card floats at different speeds
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [80 * (index % 2 === 0 ? 1 : -1), -80 * (index % 2 === 0 ? 1 : -1)]
-  );
-  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [8, 0, -8]);
-  const rotateY = useTransform(
+  const visualY = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const textY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const visualScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.92, 1, 0.98]);
+  const visualRotate = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    [index % 2 === 0 ? -4 : 4, 0, index % 2 === 0 ? 4 : -4]
+    [index % 2 === 0 ? -3 : 3, 0, index % 2 === 0 ? 2 : -2]
   );
 
+  const isReversed = index % 2 !== 0;
+
   return (
-    <motion.div
+    <section
+      data-section
       ref={ref}
-      style={{ y, perspective: 1000 }}
-      initial={{ opacity: 0, y: 60 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.8,
-        delay: index * 0.15,
-        ease: [0.86, 0, 0.07, 1],
-      }}
+      className="relative min-h-screen flex items-center py-20 md:py-0"
+      style={{ background: index % 2 === 0 ? "#fff" : "#fafafa" }}
     >
-      <motion.div
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d", background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
-        className="group relative rounded-3xl p-10 md:p-14 cursor-pointer overflow-hidden"
-        whileHover={{ scale: 1.015, y: -4 }}
-        transition={{ duration: 0.6, ease: [0.86, 0, 0.07, 1] }}
-      >
-        {/* Background color blob — Delassus-style product illustrations */}
+      <div className="w-full max-w-[1300px] mx-auto px-6 md:px-12">
         <div
-          className="absolute top-0 right-0 w-[280px] h-[280px] rounded-full opacity-[0.12] blur-3xl transition-all duration-1000 group-hover:opacity-[0.22] group-hover:scale-110"
-          style={{ background: project.color }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10">
-          {/* Tag */}
-          <div
-            className="inline-block px-4 py-1.5 rounded-full text-[0.75rem] font-[700] tracking-[0.08em] uppercase mb-8"
+          className={`grid md:grid-cols-2 gap-12 md:gap-16 items-center ${
+            isReversed ? "md:direction-rtl" : ""
+          }`}
+        >
+          {/* Visual side — Delassus-style big product image */}
+          <motion.div
             style={{
-              background: `${project.color}18`,
-              color: project.color,
+              y: visualY,
+              scale: visualScale,
+              rotate: visualRotate,
+              perspective: 1200,
+              order: isReversed ? 2 : 1,
             }}
+            initial={{ opacity: 0, x: isReversed ? 60 : -60 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{
+              duration: 1,
+              delay: 0.2,
+              ease: [0.86, 0, 0.07, 1],
+            }}
+            className="relative"
           >
-            {project.tag}
-          </div>
-
-          {/* Title */}
-          <h3
-            className="text-[clamp(2rem,4vw,3.25rem)] font-[700] leading-[1.05] tracking-[-0.03em] mb-5"
-            style={{ color: "#1a1a1a" }}
-          >
-            {project.title}
-          </h3>
-
-          {/* Description */}
-          <p
-            className="text-[clamp(0.9375rem,1.4vw,1.125rem)] leading-[1.7] max-w-[480px] mb-8 font-[400]"
-            style={{ color: "#555" }}
-          >
-            {project.description}
-          </p>
-
-          {/* Feature pills */}
-          <div className="flex flex-wrap gap-2 mb-8">
-            {project.features.map((f) => (
-              <span
-                key={f}
-                className="px-4 py-2 rounded-full text-[0.8125rem] font-[600]"
-                style={{ background: "#f0f0f0", color: "#1a1a1a" }}
-              >
-                {f}
-              </span>
-            ))}
-          </div>
-
-          {/* Arrow — Delassus external link style */}
-          <div
-            className="inline-flex items-center gap-2 text-[0.875rem] font-[700] group-hover:gap-3 transition-all duration-500"
-            style={{ color: project.color }}
-          >
-            View project
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              className="transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+            {/* Color background card — like Delassus's fruit on colored bg */}
+            <div
+              className="relative rounded-[2rem] overflow-hidden aspect-[4/3]"
+              style={{ background: project.colorLight }}
             >
-              <path d="M7 17L17 7M17 7H7M17 7v10" />
-            </svg>
-          </div>
-        </div>
+              {/* Floating accent blob */}
+              <motion.div
+                className="absolute inset-0"
+                animate={
+                  inView
+                    ? {
+                        scale: [1, 1.05, 1],
+                        rotate: [0, 2, 0],
+                      }
+                    : {}
+                }
+                transition={{
+                  duration: 10,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <div
+                  className="absolute top-[10%] left-[10%] w-[70%] h-[70%] rounded-full blur-3xl opacity-30"
+                  style={{ background: project.color }}
+                />
+              </motion.div>
 
-        {/* Border on hover */}
-        <div
-          className="absolute inset-0 rounded-3xl border transition-all duration-700 group-hover:border-opacity-20"
-          style={{ borderColor: `${project.color}00` }}
-        />
-      </motion.div>
-    </motion.div>
+              {/* Project icon/illustration placeholder */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={inView ? { scale: 1, opacity: 1 } : {}}
+                  transition={{ duration: 0.8, delay: 0.5, ease: [0.86, 0, 0.07, 1] }}
+                  className="text-[5rem] md:text-[7rem] font-[700] leading-none select-none"
+                  style={{ color: project.color, opacity: 0.2 }}
+                >
+                  {project.title.charAt(0)}
+                </motion.div>
+              </div>
+
+              {/* Tag badge — floating */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="absolute bottom-5 left-5 px-4 py-2 rounded-full text-[0.75rem] font-[700] tracking-[0.08em] uppercase"
+                style={{
+                  background: "#fff",
+                  color: project.color,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                }}
+              >
+                {project.tag}
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Text side — Delassus pattern: title, description, stats, CTA */}
+          <motion.div
+            style={{ y: textY, order: isReversed ? 1 : 2 }}
+            initial={{ opacity: 0, x: isReversed ? -60 : 60 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{
+              duration: 1,
+              delay: 0.4,
+              ease: [0.86, 0, 0.07, 1],
+            }}
+            className="flex flex-col justify-center"
+          >
+            {/* Color dot */}
+            <div className="flex items-center gap-3 mb-6">
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ background: project.color }}
+              />
+              <span
+                className="text-[0.8125rem] font-[600] tracking-[0.1em] uppercase"
+                style={{ color: "#757575" }}
+              >
+                {project.tag}
+              </span>
+            </div>
+
+            {/* Title — big and bold */}
+            <h2
+              className="text-[clamp(2.5rem,5vw,4.5rem)] font-[700] leading-[1.0] tracking-[-0.03em] mb-6"
+              style={{ color: "#1a1a1a" }}
+            >
+              {project.title}
+            </h2>
+
+            {/* Description */}
+            <p
+              className="text-[clamp(0.9375rem,1.4vw,1.125rem)] leading-[1.8] max-w-[480px] mb-8"
+              style={{ color: "#555" }}
+            >
+              {project.description}
+            </p>
+
+            {/* Stats row — like Delassus "Duroc is" info */}
+            <div className="flex gap-8 mb-10">
+              {project.stats.map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
+                >
+                  <div
+                    className="text-[1.25rem] font-[700] leading-none"
+                    style={{ color: "#1a1a1a" }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div
+                    className="mt-1 text-[0.75rem] font-[500]"
+                    style={{ color: "#999" }}
+                  >
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Feature pills */}
+            <div className="flex flex-wrap gap-2 mb-10">
+              {project.features.map((f, i) => (
+                <motion.span
+                  key={f}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 0.4, delay: 0.7 + i * 0.05 }}
+                  className="px-4 py-2 rounded-full text-[0.8125rem] font-[600]"
+                  style={{ background: "#f0f0f0", color: "#1a1a1a" }}
+                >
+                  {f}
+                </motion.span>
+              ))}
+            </div>
+
+            {/* CTA — Delassus-style */}
+            <motion.a
+              href={project.link}
+              target={project.link !== "#" ? "_blank" : undefined}
+              rel={project.link !== "#" ? "noopener noreferrer" : undefined}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full text-[0.9375rem] font-[700] transition-all duration-500 hover:shadow-lg w-fit"
+              style={{
+                background: project.color,
+                color: "#fff",
+                boxShadow: `0 4px 24px ${project.color}30`,
+              }}
+            >
+              View project
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                className="transition-transform duration-500 group-hover:translate-x-1"
+              >
+                <path d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
+            </motion.a>
+          </motion.div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -166,49 +303,47 @@ export default function Work() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section
-      data-section
-      ref={ref}
-      id="work"
-      className="relative py-32 md:py-48 px-6"
-      style={{ background: "#fff" }}
-    >
-      <div className="max-w-[1100px] mx-auto">
-        {/* Section label */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-          className="text-[0.75rem] tracking-[0.3em] uppercase mb-6"
-          style={{ color: "#757575" }}
-        >
-          Selected Work
-        </motion.p>
+    <div id="work">
+      {/* Section header */}
+      <section
+        data-section
+        ref={ref}
+        className="relative py-32 md:py-48 px-6"
+        style={{ background: "#fafafa" }}
+      >
+        <div className="max-w-[1300px] mx-auto">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+            className="text-[0.8125rem] tracking-[0.3em] uppercase mb-6"
+            style={{ color: "#999" }}
+          >
+            Selected Work
+          </motion.p>
 
-        {/* Heading */}
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{
-            duration: 0.8,
-            delay: 0.1,
-            ease: [0.86, 0, 0.07, 1],
-          }}
-          className="text-[clamp(2.5rem,5.5vw,5rem)] leading-[1.0] font-[700] tracking-[-0.03em] mb-20 max-w-[600px]"
-          style={{ color: "#1a1a1a" }}
-        >
-          Things I&apos;ve
-          <br />
-          built.
-        </motion.h2>
-
-        {/* Project cards — Delassus floating layout */}
-        <div className="space-y-12 md:space-y-20">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.title} project={project} index={i} />
-          ))}
+          <motion.h2
+            initial={{ opacity: 0, y: 50 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{
+              duration: 1,
+              delay: 0.1,
+              ease: [0.86, 0, 0.07, 1],
+            }}
+            className="text-[clamp(2.5rem,6vw,5.5rem)] leading-[1.0] font-[700] tracking-[-0.03em]"
+            style={{ color: "#1a1a1a" }}
+          >
+            Things I&apos;ve
+            <br />
+            built.
+          </motion.h2>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Individual project sections — Delassus full-viewport pattern */}
+      {projects.map((project, i) => (
+        <ProjectSection key={project.title} project={project} index={i} />
+      ))}
+    </div>
   );
 }
