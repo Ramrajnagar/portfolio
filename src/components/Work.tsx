@@ -78,6 +78,42 @@ const projects = [
     ],
     techLogos: ["typescript", "python", "nodejs"],
   },
+  {
+    id: "codegraphcontext",
+    title: "CodeGraphContext",
+    description:
+      "Open source contributor to a 3.9k-star MCP server that indexes codebases into graph databases for AI assistants. Helping bridge the gap between deep code graphs and AI context across 23 programming languages.",
+    color: "#a855f7",
+    colorLight: "#a855f718",
+    tag: "Open Source · 3.9k ★",
+    link: "https://github.com/CodeGraphContext/CodeGraphContext",
+    githubLink: "https://github.com/CodeGraphContext/CodeGraphContext",
+    features: ["MCP Server", "Graph DB indexing", "23 languages", "AI context"],
+    stats: [
+      { label: "Stars", value: "3.9k" },
+      { label: "Forks", value: "779" },
+      { label: "Lang", value: "Python" },
+    ],
+    techLogos: ["python", "typescript", "docker"],
+  },
+  {
+    id: "kmesh",
+    title: "Kmesh",
+    description:
+      "LFX contributor to a Linux Foundation project — high-performance service mesh data plane built on eBPF and programmable kernel. 60% lower forwarding delay, 70% less overhead than Envoy-based sidecars.",
+    color: "#3b82f6",
+    colorLight: "#3b82f618",
+    tag: "LFX · Linux Foundation",
+    link: "https://github.com/kmesh-net/kmesh",
+    githubLink: "https://github.com/kmesh-net/kmesh",
+    features: ["eBPF", "Service mesh", "Kernel-native", "Sidecarless"],
+    stats: [
+      { label: "Stars", value: "738" },
+      { label: "Perf", value: "60%↓" },
+      { label: "Stack", value: "Go + C" },
+    ],
+    techLogos: ["nodejs", "docker", "tailwind"],
+  },
 ];
 
 function ProjectCard({

@@ -595,12 +595,244 @@ function IntelliTradeLogo() {
   );
 }
 
+function CodeGraphContextLogo() {
+  const nodes = [
+    { x: 100, y: 40 }, { x: 55, y: 75 }, { x: 145, y: 75 },
+    { x: 40, y: 125 }, { x: 100, y: 160 }, { x: 160, y: 125 },
+    { x: 75, y: 105 }, { x: 125, y: 105 },
+  ];
+
+  const edges = [
+    [0, 1], [0, 2], [1, 3], [2, 5], [3, 4], [5, 4],
+    [6, 7], [1, 6], [2, 7], [6, 3], [7, 5], [0, 6], [0, 7],
+  ];
+
+  return (
+    <svg viewBox="0 0 200 200" className="w-full h-full">
+      <defs>
+        <radialGradient id="cg-bg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#a855f7" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
+        </radialGradient>
+        <filter id="cg-glow">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <linearGradient id="cg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#a855f7" />
+          <stop offset="100%" stopColor="#6366f1" />
+        </linearGradient>
+      </defs>
+
+      {/* Background */}
+      <motion.circle cx="100" cy="100" r="75" fill="url(#cg-bg)"
+        initial={{ r: 0 }} animate={{ r: 75 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      />
+
+      {/* Code bracket accents */}
+      <motion.path d="M35 60 L25 100 L35 140" fill="none" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.2 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      />
+      <motion.path d="M165 60 L175 100 L165 140" fill="none" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.2 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      />
+
+      {/* Edges */}
+      {edges.map(([a, b], i) => (
+        <motion.line
+          key={`e${i}`}
+          x1={nodes[a].x} y1={nodes[a].y}
+          x2={nodes[b].x} y2={nodes[b].y}
+          stroke="#a855f7" strokeWidth="1" strokeLinecap="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 0.35 }}
+          transition={{ duration: 0.4, delay: 0.2 + i * 0.05, ease: [0.23, 1, 0.32, 1] }}
+        />
+      ))}
+
+      {/* Nodes */}
+      {nodes.map((n, i) => (
+        <motion.g key={`n${i}`} filter="url(#cg-glow)">
+          <motion.circle
+            cx={n.x} cy={n.y} r="6"
+            fill="url(#cg-grad)"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.7 + i * 0.07, ease: [0.86, 0, 0.07, 1] }}
+          />
+          <motion.circle cx={n.x} cy={n.y} r="2" fill="#fff"
+            initial={{ scale: 0 }} animate={{ scale: 1 }}
+            transition={{ duration: 0.2, delay: 0.9 + i * 0.07 }}
+          />
+        </motion.g>
+      ))}
+
+      {/* MCP pulse */}
+      <motion.circle cx="100" cy="100" r="6" fill="none" stroke="#a855f7" strokeWidth="1"
+        initial={{ r: 6, opacity: 0 }}
+        animate={{ r: 40, opacity: [0, 0.4, 0] }}
+        transition={{ duration: 2.5, repeat: Infinity, delay: 2, ease: "easeOut" }}
+      />
+
+      {/* Traveling data packet */}
+      <motion.circle r="2.5" fill="#c084fc" filter="url(#cg-glow)"
+        initial={{ opacity: 0 }}
+        animate={{
+          cx: [55, 100, 145, 100, 55],
+          cy: [75, 40, 75, 160, 75],
+          opacity: [0, 1, 1, 1, 0],
+        }}
+        transition={{ duration: 4, repeat: Infinity, delay: 2.5, ease: "linear" }}
+      />
+
+      {/* Floating particles */}
+      {[
+        { x: 30, y: 55 }, { x: 170, y: 85 }, { x: 50, y: 170 },
+        { x: 155, y: 55 }, { x: 90, y: 30 },
+      ].map((p, i) => (
+        <motion.circle key={`fp${i}`} cx={p.x} cy={p.y} r="1.2" fill="#a855f7"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.6, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, delay: 3 + i * 0.3 }}
+        />
+      ))}
+    </svg>
+  );
+}
+
+function KmeshLogo() {
+  return (
+    <svg viewBox="0 0 200 200" className="w-full h-full">
+      <defs>
+        <radialGradient id="km-bg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+        </radialGradient>
+        <filter id="km-glow">
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <linearGradient id="km-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#06b6d4" />
+        </linearGradient>
+      </defs>
+
+      {/* Background */}
+      <motion.circle cx="100" cy="100" r="70" fill="url(#km-bg)"
+        initial={{ r: 0 }} animate={{ r: 70 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      />
+
+      {/* eBPF hexagonal mesh — kernel level */}
+      {[
+        { x: 100, y: 55 }, { x: 65, y: 80 }, { x: 135, y: 80 },
+        { x: 65, y: 120 }, { x: 135, y: 120 }, { x: 100, y: 145 },
+      ].map((n, i) => (
+        <motion.g key={`h${i}`} filter="url(#km-glow)">
+          <motion.path
+            d={`M${n.x} ${n.y - 10} L${n.x + 8.66} ${n.y - 5} L${n.x + 8.66} ${n.y + 5} L${n.x} ${n.y + 10} L${n.x - 8.66} ${n.y + 5} L${n.x - 8.66} ${n.y - 5}Z`}
+            fill="none" stroke="#3b82f6" strokeWidth="1.2"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.8 }}
+            transition={{ duration: 0.5, delay: 0.2 + i * 0.1, ease: [0.86, 0, 0.07, 1] }}
+          />
+          <motion.circle cx={n.x} cy={n.y} r="2.5" fill="#3b82f6"
+            initial={{ scale: 0 }} animate={{ scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.6 + i * 0.1 }}
+          />
+        </motion.g>
+      ))}
+
+      {/* Connections — kernel mesh network */}
+      {[
+        [0, 1], [0, 2], [1, 3], [2, 4], [3, 5], [4, 5],
+        [1, 2], [3, 4], [1, 4], [2, 3],
+      ].map(([a, b], i) => {
+        const pts = [
+          { x: 100, y: 55 }, { x: 65, y: 80 }, { x: 135, y: 80 },
+          { x: 65, y: 120 }, { x: 135, y: 120 }, { x: 100, y: 145 },
+        ];
+        return (
+          <motion.line
+            key={`c${i}`}
+            x1={pts[a].x} y1={pts[a].y}
+            x2={pts[b].x} y2={pts[b].y}
+            stroke="#3b82f6" strokeWidth="0.8" strokeLinecap="round"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.25 }}
+            transition={{ duration: 0.4, delay: 0.5 + i * 0.05, ease: [0.23, 1, 0.32, 1] }}
+          />
+        );
+      })}
+
+      {/* eBPF kernel ring representation */}
+      <motion.circle cx="100" cy="100" r="55" fill="none" stroke="#06b6d4" strokeWidth="0.6" strokeDasharray="4 4"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.3 }}
+        transition={{ duration: 2, delay: 1 }}
+      />
+
+      {/* Traffic flow arrows — data packets */}
+      {[
+        { path: "M65,80 Q100,60 135,80", delay: 2 },
+        { path: "M65,120 Q100,140 135,120", delay: 2.5 },
+        { path: "M100,55 Q130,100 100,145", delay: 3 },
+      ].map((p, i) => (
+        <motion.path
+          key={`flow${i}`}
+          d={p.path}
+          fill="none" stroke="#06b6d4" strokeWidth="1.5" strokeLinecap="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 0.5 }}
+          transition={{ duration: 1.5, delay: p.delay, ease: [0.86, 0, 0.07, 1] }}
+        />
+      ))}
+
+      {/* Glowing packets traveling */}
+      <motion.circle r="2.5" fill="#3b82f6" filter="url(#km-glow)"
+        initial={{ opacity: 0 }}
+        animate={{
+          cx: [65, 100, 135, 100, 65],
+          cy: [80, 55, 80, 120, 80],
+          opacity: [0, 1, 1, 1, 0],
+        }}
+        transition={{ duration: 3.5, repeat: Infinity, delay: 3, ease: "linear" }}
+      />
+
+      {/* Pulse rings — sidecarless performance */}
+      {[0, 1].map((i) => (
+        <motion.circle
+          key={`p${i}`}
+          cx="100" cy="100" r="55" fill="none" stroke="#3b82f6" strokeWidth="0.6"
+          initial={{ r: 55, opacity: 0 }}
+          animate={{ r: 80, opacity: [0, 0.3, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, delay: 3.5 + i * 0.5, ease: "easeOut" }}
+        />
+      ))}
+    </svg>
+  );
+}
+
 const logoMap: Record<string, React.FC> = {
   rverity: RverityLogo,
   inkShe: InkSheLogo,
   inkshe: InkSheLogo,
   ledgera: LedgeraLogo,
   intellitrade: IntelliTradeLogo,
+  codegraphcontext: CodeGraphContextLogo,
+  kmesh: KmeshLogo,
 };
 
 export default function ProjectLogo({
